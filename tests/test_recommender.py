@@ -59,3 +59,26 @@ def test_explain_recommendation_returns_non_empty_string():
     explanation = rec.explain_recommendation(user, song)
     assert isinstance(explanation, str)
     assert explanation.strip() != ""
+
+
+def test_score_song_uses_genre_then_mood_then_energy_weights():
+    from src.recommender import score_song
+
+    user_prefs = {
+        "favorite_genre": "pop",
+        "favorite_mood": "happy",
+        "target_energy": 0.8,
+        "likes_acoustic": False,
+    }
+    song = {
+        "genre": "pop",
+        "mood": "sad",
+        "energy": 0.8,
+        "acousticness": 0.2,
+    }
+
+    score, reasons = score_song(user_prefs, song)
+
+    assert score >= 5.0
+    assert any("favorite genre" in reason for reason in reasons)
+    assert any("energy" in reason for reason in reasons)
