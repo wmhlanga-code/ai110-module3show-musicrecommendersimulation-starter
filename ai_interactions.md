@@ -10,19 +10,21 @@
 
 **What task did you give the agent?**
 
-<!-- Describe the goal you asked the agent to accomplish -->
+I asked the AI assistant to add advanced song attributes to the dataset and update the scoring logic so the recommender could use them.
 
 **Prompts used:**
 
-<!-- Paste the key prompts you gave the agent -->
+- “Add 5+ new song attributes to the dataset such as popularity, release decade, mood tags, lyrical depth, instrumentalness, and vocal energy.”
+- “Update the recommender scoring logic so these features influence the score, while keeping the existing genre, mood, energy, and acoustic behavior intact.”
+- “Help me verify the changes and make sure the output still runs correctly.”
 
 **What did the agent generate or change?**
 
-<!-- List the files edited, code generated, or commands run -->
+The assistant updated the CSV data file with new columns and modified the recommender scoring code to read and use the new attributes. It also helped add a test covering the new feature logic.
 
 **What did you verify or fix manually?**
 
-<!-- Describe anything the agent got wrong or that required human review -->
+I verified that the new attributes were loaded from the CSV and that the scorer used them in the ranking logic. I also fixed a packaging issue so the project imports the recommender module correctly during test runs.
 
 ---
 

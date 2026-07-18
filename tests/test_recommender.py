@@ -82,3 +82,56 @@ def test_score_song_uses_genre_then_mood_then_energy_weights():
     assert score >= 5.0
     assert any("favorite genre" in reason for reason in reasons)
     assert any("energy" in reason for reason in reasons)
+
+
+def test_score_song_uses_advanced_features_when_present():
+    from src.recommender import score_song
+
+    user_prefs = {
+        "favorite_genre": "pop",
+        "favorite_mood": "happy",
+        "target_energy": 0.8,
+        "likes_acoustic": False,
+        "preferred_popularity": 85,
+        "preferred_release_decade": 2020,
+        "preferred_mood_tags": "nostalgic, euphoric",
+        "preferred_lyrical_depth": 0.7,
+        "preferred_instrumentalness": 0.2,
+        "preferred_vocal_energy": 0.8,
+    }
+    song = {
+        "genre": "pop",
+        "mood": "happy",
+        "energy": 0.8,
+        "acousticness": 0.2,
+        "popularity": 85,
+        "release_decade": 2020,
+        "mood_tags": "euphoric, nostalgic",
+        "lyrical_depth": 0.7,
+        "instrumentalness": 0.2,
+        "vocal_energy": 0.8,
+    }
+
+    score, reasons = score_song(user_prefs, song)
+
+    assert score > 8.0
+    assert any("popularity" in reason for reason in reasons)
+    assert any("release decade" in reason for reason in reasons)
+
+
+def test_invalid_energy_preference_is_rejected():
+    from src.recommender import validate_user_preferences
+
+    bad_user_prefs = {
+        "favorite_genre": "pop",
+        "favorite_mood": "happy",
+        "target_energy": 1.7,
+        "likes_acoustic": False,
+    }
+
+    try:
+        validate_user_preferences(bad_user_prefs)
+    except ValueError as exc:
+        assert "target_energy" in str(exc)
+    else:
+        raise AssertionError("Expected ValueError for out-of-range energy")
